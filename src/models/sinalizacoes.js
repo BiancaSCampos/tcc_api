@@ -18,10 +18,10 @@ export function findAll(callback) {
   });
 }
 
-export function findByMedic(id) {
+export function findByPatient(id) {
   return new Promise((resolve, reject) => {
     connection.query(
-      "SELECT * FROM `medcare`.`paciente` JOIN `medcare`.`atendimento` ON `paciente`.`idpaciente` = `atendimento`.`paciente_idpaciente` WHERE `atendimento`.`id_medico` = ? ORDER BY `paciente`.`nome` ASC",
+      "SELECT * FROM medcare.sinalizacoes WHERE id_paciente = ?",
       [id],
       (err, result) => {
         if (err) {
