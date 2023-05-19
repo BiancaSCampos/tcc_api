@@ -15,17 +15,10 @@ router.get("/all", async (req, res) => {
   findAll((result) => {
     res.json(result);
   });
-  console.log("====================================");
-  console.log("alou");
-  console.log("====================================");
 });
 
 //Ler um recurso específico
 router.get("/", async (req, res) => {
-  console.log("====================================");
-  console.log(req.query.user);
-  console.log("====================================");
-
   const user = req.query.user;
   try {
     const doctor = await findByUser(user);
