@@ -1,6 +1,6 @@
 import express from "express";
 
-import { findAll } from "../models/exame.js";
+import { findAll, findByPatient } from "../models/exame.js";
 
 const router = express.Router();
 const app = express();
@@ -18,8 +18,16 @@ router.get("/", async (req, res) => {
 });
 
 // Ler um recurso específico
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
   // TODO: implementar
+  const idPaciente = req.params.id;
+  try {
+    const exames = await findByPatient(idPaciente);
+    res.json(exames);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erro interno do servidor" });
+  }
 });
 
 // Atualizar um recurso
