@@ -11,11 +11,6 @@ router.get("/", async (req, res) => {
   });
 });
 
-// Ler um recurso específico
-router.get("/:id", (req, res) => {
-  // TODO: implementar
-});
-
 app.use("/", router);
 
 export default router;

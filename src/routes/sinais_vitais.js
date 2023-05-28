@@ -4,9 +4,7 @@ import { findByPatient } from "../models/sinais_vitais.js";
 const router = express.Router();
 const app = express();
 
-// Ler um recurso específico
 router.get("/:id", async (req, res) => {
-  // TODO: implementar
   const idPaciente = req.params.id;
   try {
     const sinaisVitais = await findByPatient(idPaciente);
