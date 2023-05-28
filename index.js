@@ -1,13 +1,13 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import medicoRouter from "./routes/medico.js";
-import pacienteRouter from "./routes/paciente.js";
-import authRouter from "./routes/auth.js";
-import atendimentoRouter from "./routes/atendimento.js";
-import sinalizacaoRouter from "./routes/sinalizacoes.js";
-import examesRouter from "./routes/exame.js";
-import sinaisVitaisRouter from "./routes/sinais_vitais.js";
+import medicoRouter from "./src/routes/medico.js";
+import pacienteRouter from "./src/routes/paciente.js";
+import authRouter from "./src/routes/auth.js";
+import atendimentoRouter from "./src/routes/atendimento.js";
+import sinalizacaoRouter from "./src/routes/sinalizacoes.js";
+import examesRouter from "./src/routes/exame.js";
+import sinaisVitaisRouter from "./src/routes/sinais_vitais.js";
 
 const app = express();
 

@@ -16,16 +16,6 @@ router.get("/medicos/:id/pacientes", async (req, res) => {
   }
 });
 
-// Atualizar um recurso
-router.put("/:id", (req, res) => {
-  // TODO: implementar
-});
-
-// Excluir um recurso
-router.delete("/:id", (req, res) => {
-  // TODO: implementar
-});
-
 app.use("/", router);
 
 export default router;

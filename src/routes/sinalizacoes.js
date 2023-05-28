@@ -4,7 +4,6 @@ import { findByPatient } from "../models/sinalizacoes.js";
 const router = express.Router();
 const app = express();
 
-//Ler um recurso específico
 router.get("/:id", async (req, res) => {
   const idPaciente = req.params.id;
   try {
