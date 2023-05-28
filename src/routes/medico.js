@@ -7,9 +7,13 @@ const app = express();
 
 // Ler todos os recursos
 router.get("/all", async (req, res) => {
-  findAll((result) => {
-    res.json(result);
-  });
+  try {
+    const results = await findAll();
+    res.json(results);
+  } catch (err) {
+    console.error("Erro ao obter todos os médicos:", err);
+    res.sendStatus(500);
+  }
 });
 
 //Ler um recurso específico

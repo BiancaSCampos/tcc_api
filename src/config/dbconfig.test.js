@@ -1,63 +1,79 @@
-import mysql from "mysql";
-import connection from "./dbconfig";
+import { getConnection, executeQuery } from "./dbconfig";
 
-describe("Database Connection", () => {
-  beforeAll((done) => {
-    connection.connect((err) => {
-      if (err) {
-        console.log("Error to connect database", err);
-        done();
-      } else {
-        console.log("Connection established");
-        done();
-      }
+jest.mock("mysql", () => {
+  const mockConnection = {
+    query: jest.fn(),
+    release: jest.fn(),
+  };
+
+  const mockPool = {
+    getConnection: jest.fn((callback) => {
+      callback(null, mockConnection);
+    }),
+    releaseConnection: jest.fn(),
+  };
+
+  return {
+    createPool: jest.fn(() => mockPool),
+  };
+});
+
+describe("MySQL Utils", () => {
+  describe("getConnection", () => {
+    test("should resolve with a connection object", async () => {
+      const connection = await getConnection();
+      expect(connection).toBeDefined();
+      expect(connection.query).toEqual(expect.any(Function));
+      expect(connection.release).toEqual(expect.any(Function));
+    });
+
+    test("should reject with an error if getConnection fails", async () => {
+      const error = new Error("Connection failed");
+      const mockPool = require("mysql").createPool();
+      mockPool.getConnection.mockImplementationOnce((callback) => {
+        callback(error);
+      });
+
+      await expect(getConnection()).rejects.toThrow(error);
+      expect(mockPool.getConnection).toHaveBeenCalled();
+      expect(mockPool.releaseConnection).not.toHaveBeenCalled();
     });
   });
 
-  afterAll((done) => {
-    connection.end((err) => {
-      if (err) {
-        console.log("Error to disconnect database", err);
-        done();
-      } else {
-        console.log("Connection closed");
-        done();
-      }
-    });
-  });
+  describe("executeQuery", () => {
+    const query = "SELECT * FROM medico";
 
-  it("should establish a database connection", (done) => {
-    connection.on("connect", () => {
-      expect(connection.state).toBe("connected");
-      done();
-    });
-  });
+    test("should resolve with query results", async () => {
+      const mockResults = [{ id: 1, usuario: "ana" }];
+      const connection = await getConnection();
+      connection.query.mockImplementationOnce((_, __, callback) => {
+        callback(null, mockResults);
+      });
 
-  it("should be disconnected after ending the connection", (done) => {
-    connection.end((err) => {
-      if (err) {
-        console.log("Error to disconnect database", err);
-        done();
-      }
+      const results = await executeQuery(query);
+      expect(results).toEqual(mockResults);
+      expect(connection.query).toHaveBeenCalledWith(
+        query,
+        [],
+        expect.any(Function)
+      );
+      expect(connection.release).toHaveBeenCalled();
     });
 
-    connection.on("end", () => {
-      expect(connection.state).toBe("disconnected");
-      done();
-    });
-  });
+    test("should reject with an error if query execution fails", async () => {
+      const error = new Error("Query execution failed");
+      const connection = await getConnection();
+      connection.query.mockImplementationOnce((_, __, callback) => {
+        callback(error);
+      });
 
-  it("should handle connection error", (done) => {
-    const invalidConnection = mysql.createConnection({
-      host: "invalidhost",
-      user: "invaliduser",
-      password: "invalidpassword",
-      database: "invaliddatabase",
-    });
-
-    invalidConnection.connect((err) => {
-      expect(err).toBeDefined();
-      done();
+      await expect(executeQuery(query)).rejects.toThrow(error);
+      expect(connection.query).toHaveBeenCalledWith(
+        query,
+        [],
+        expect.any(Function)
+      );
+      expect(connection.release).toHaveBeenCalled();
     });
   });
 });

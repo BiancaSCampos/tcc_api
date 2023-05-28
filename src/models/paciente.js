@@ -1,25 +1,29 @@
-import { connection } from "../config/dbconfig.js";
+import { executeQuery } from "../config/dbconfig.js";
 
-export function findAll(callback) {
-  connection.query("SELECT * FROM paciente", (err, result) => {
-    if (err) throw err;
-    callback(result);
-  });
+export async function findAll() {
+  const query = "SELECT * FROM paciente";
+  try {
+    const result = await executeQuery(query);
+    return result;
+  } catch (err) {
+    console.error("Erro ao executar a consulta:", err);
+    throw err;
+  }
 }
 
-export function findByMedic(id) {
-  return new Promise((resolve, reject) => {
-    connection.query(
-      "SELECT * FROM `medcare`.`paciente` JOIN `medcare`.`atendimento` ON `paciente`.`idpaciente` = `atendimento`.`paciente_idpaciente` WHERE `atendimento`.`id_medico` = ? ORDER BY `paciente`.`nome` ASC",
-      [id],
-      (err, result) => {
-        if (err) {
-          console.error(err);
-          reject(err);
-        } else {
-          resolve(result);
-        }
-      }
-    );
-  });
+export async function findByMedic(id) {
+  const query = `
+    SELECT * FROM medcare.paciente
+    JOIN medcare.atendimento ON paciente.idpaciente = atendimento.paciente_idpaciente
+    WHERE atendimento.id_medico = ?
+    ORDER BY paciente.nome ASC
+  `;
+  const params = [id];
+  try {
+    const result = await executeQuery(query, params);
+    return result;
+  } catch (err) {
+    console.error("Erro ao executar a consulta:", err);
+    throw err;
+  }
 }

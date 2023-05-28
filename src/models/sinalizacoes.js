@@ -1,18 +1,13 @@
-import { connection } from "../config/dbconfig.js";
+import { executeQuery } from "../config/dbconfig.js";
 
-export function findByPatient(id) {
-  return new Promise((resolve, reject) => {
-    connection.query(
-      "SELECT * FROM medcare.sinalizacoes WHERE id_paciente = ?",
-      [id],
-      (err, result) => {
-        if (err) {
-          console.error(err);
-          reject(err);
-        } else {
-          resolve(result);
-        }
-      }
-    );
-  });
+export async function findByPatient(id) {
+  const query = "SELECT * FROM medcare.sinalizacoes WHERE id_paciente = ?";
+  const params = [id];
+  try {
+    const result = await executeQuery(query, params);
+    return result;
+  } catch (err) {
+    console.error("Erro ao executar a consulta:", err);
+    throw err;
+  }
 }

@@ -1,25 +1,18 @@
-import { connection } from "../config/dbconfig.js";
+import { executeQuery } from "../config/dbconfig.js";
 
 export function findByUser(user) {
-  return new Promise((resolve, reject) => {
-    connection.query(
-      `SELECT * FROM medico WHERE usuario = ?`,
-      [user],
-      (err, result) => {
-        if (err) {
-          console.error(err);
-          reject(err);
-        } else {
-          resolve(result);
-        }
-      }
-    );
-  });
+  const query = `SELECT * FROM medico WHERE usuario = ?`;
+  const params = [user];
+  return executeQuery(query, params);
 }
 
-export function findAll(callback) {
-  connection.query("SELECT * FROM medico", (err, result) => {
-    if (err) throw err;
-    callback(result);
-  });
+export async function findAll(callback) {
+  const query = "SELECT * FROM medico";
+  try {
+    const results = await executeQuery(query, []);
+    return results;
+  } catch (err) {
+    console.error("Erro ao executar a consulta:", err);
+    throw err;
+  }
 }
