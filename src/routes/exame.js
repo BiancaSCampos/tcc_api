@@ -10,7 +10,6 @@ router.get("/:id", async (req, res) => {
     const exames = await findByPatient(idPaciente);
     res.json(exames);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ message: "Erro interno do servidor" });
   }
 });
