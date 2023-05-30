@@ -8,6 +8,7 @@ const router = express.Router();
 router.get("/all", async (req, res) => {
   try {
     const results = await findAll();
+
     res.json(results);
   } catch (err) {
     res.status(500).json({ message: "Erro interno do servidor" });
