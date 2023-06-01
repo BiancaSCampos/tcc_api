@@ -1,7 +1,7 @@
 import { executeQuery } from "../config/dbconfig.js";
 
 export async function findByPatient(id) {
-  const query = "SELECT * FROM medcare.sinais_vitais WHERE id_paciente = ?";
+  const query = "SELECT * FROM sql10623048.sinais_vitais WHERE id_paciente = ?";
   const params = [id];
   try {
     const result = await executeQuery(query, params);

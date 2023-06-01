@@ -13,7 +13,7 @@ export async function findAll(callback) {
 
 export async function findByPatient(id) {
   const query =
-    "SELECT * FROM medcare.exame JOIN medcare.status_exame ON exame.status_id = status_exame.idstatus_exame WHERE paciente_idpaciente = ?";
+    "SELECT * FROM sql10623048.exame JOIN `sql10623048`.status_exame ON exame.status_id = status_exame.idstatus_exame WHERE paciente_idpaciente = ?";
   const params = [id];
   try {
     const results = await executeQuery(query, params);
