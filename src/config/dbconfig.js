@@ -2,10 +2,10 @@ import mysql from "mysql";
 
 const pool = mysql.createPool({
   connectionLimit: 10, // limite máximo de conexões no pool
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: "medcare",
+  host: "sql10.freemysqlhosting.net",
+  user: "sql10623048",
+  password: "EVtvXH5vYd",
+  database: "sql10623048",
 });
 
 export const getConnection = () => {
