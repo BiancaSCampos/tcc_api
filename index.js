@@ -23,8 +23,8 @@ app.use("/.netlify/functions/index/sinalizacoes", sinalizacaoRouter);
 app.use("/.netlify/functions/index/exames", examesRouter);
 app.use("/.netlify/functions/index/sinais-vitais", sinaisVitaisRouter);
 
-module.exports.handler = serverless(app);
+app.listen(3089, () => {
+  console.log("Servidor iniciado na porta 3089");
+});
 
-// app.listen(3089, () => {
-//   console.log("Servidor iniciado na porta 3089");
-// });
+module.exports.handler = serverless(app);
