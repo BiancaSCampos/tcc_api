@@ -9,7 +9,7 @@ import sinalizacaoRouter from "./src/routes/sinalizacoes.js";
 import examesRouter from "./src/routes/exame.js";
 import sinaisVitaisRouter from "./src/routes/sinais_vitais.js";
 const serverless = require("serverless-http");
-
+const port = process.env.PORT || 3089;
 const app = express();
 
 app.use(bodyParser.json());
@@ -23,6 +23,6 @@ app.use("/sinalizacoes", sinalizacaoRouter);
 app.use("/exames", examesRouter);
 app.use("/sinais-vitais", sinaisVitaisRouter);
 
-app.listen(3089, () => {
-  console.log("Servidor iniciado na porta 3089");
+app.listen(port, () => {
+  console.log(`Servidor iniciado na porta ${port}`);
 });
