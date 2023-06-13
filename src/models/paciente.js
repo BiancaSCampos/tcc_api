@@ -13,8 +13,8 @@ export async function findAll() {
 
 export async function findByMedic(id) {
   const query = `
-    SELECT * FROM sql10623048.paciente
-    JOIN sql10623048.atendimento ON paciente.idpaciente = atendimento.paciente_idpaciente
+    SELECT * FROM medcare.paciente
+    JOIN medcare.atendimento ON paciente.idpaciente = atendimento.paciente_idpaciente
     WHERE atendimento.id_medico = ?
     ORDER BY paciente.nome ASC
   `;
